@@ -1,0 +1,4 @@
+(library
+ (name chungus)
+ (public_name chungus)
+ (modules parser chars combinator))
