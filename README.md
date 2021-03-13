@@ -38,7 +38,6 @@ let terminal () =
   return =<< (identifier <?> int)
 
 let rec lambda () =
-  ignore_spaces ();
   let pos = get_position () in
   let* id = str "λ" >> spaces >> identifier in
   let* ex = spaces >> str "->" >> expression in
@@ -48,13 +47,12 @@ and non_app () =
   lambda <?> terminal <?> parens expression >>= return
 
 and app l r =
-    ignore_spaces ();
-    Apply (get_position (), l, r)
+  Apply (get_position (), l, r)
 
-and expression () = return =<< chainl (spaces >> non_app) (lift app)
+and expression () = return =<< chainl (spaces >> non_app) (spaces >> lift app)
 
 let () =
-  from_string "(λ chrisNevers -> chrisNevers (λ shamone -> hehe)) (λ whenTheImposterIsSus -> 54235)";
+  from_string "( λ chrisNevers -> chrisNevers (λ shamone -> hehe) ) (λ whenTheImposterIsSus -> 54235)";
   match expression () with
   | Ok e -> print_endline (show_exp e)
   | _    -> print_endline "Failed to parse expression"
