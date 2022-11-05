@@ -1,4 +1,4 @@
-# Chungus Parser Combinator
+# Monadic Parser Combinator
 
 A simple monadic parser combinator library with position information.
 
